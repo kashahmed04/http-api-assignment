@@ -26,7 +26,7 @@ const respond = (request, response, content, type) => {
     'Content-Length': Buffer.byteLength(content, 'utf8'),
   });
   
-  response.write(content);
+  response.write(typeString);
   
   response.end();
 };

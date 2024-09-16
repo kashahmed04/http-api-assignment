@@ -89,34 +89,76 @@
     const init = () => {
       //Grab references to all the buttons on the page.
       //how to get the specific pages
-      const errorButton = document.querySelector("#page")
-      const typeButton = document.querySelector("#type");
+      const errorButton = document.querySelector("#page").value;
+      const typeButton = document.querySelector("#type").value;
+      const sendButton = document.querySelector("#send");
 
-      const success = () => sendFetch('/success');
-      const badRequest = () => sendFetch('/badRequest');
-      const unauthorized = () => sendFetch('/unauthorized');
-      const forbidden = () => sendFetch('/forbidden');
-      const internal = () => sendFetch('/internal');
-      const notImplemented = () => sendFetch('/notImplemented');
-      const notFound = () => sendFetch('/somethingUnhandled');
+      sendButton.addEventListener('click', () => {
+
+      switch (errorButton) {
+      case '/success':
+        sendFetch('/success');
+        break;
+      case '/badRequest':
+        sendFetch('/badRequest');
+        break;
+      case '/unauthorized':
+        sendFetch('/unauthorized');
+        break;
+      case '/forbidden':
+        sendFetch('/forbidden');
+        break;
+      case '/internal':
+        sendFetch('/internal');
+        break;
+      case '/notImplemented':
+        sendFetch('/notImplemented');
+        break;
+      case '/notFound':
+        sendFetch('/somethingUnhandled');
+        break;
+      default:
+        console.log('Unhandled page value');
+      }
+
+      switch (typeButton) {
+      case 'application/json':
+        sendFetchRequest('/json', 'application/json');
+        break;
+      case 'text/xml':
+        sendFetchRequest('/xml', 'text/xml');
+        break;
+      default:
+        console.log('Unhandled type value');
+      }
+
+    });
+
+      // const success = () => sendFetch('/success');
+      // const badRequest = () => sendFetch('/badRequest');
+      // const unauthorized = () => sendFetch('/unauthorized');
+      // const forbidden = () => sendFetch('/forbidden');
+      // const internal = () => sendFetch('/internal');
+      // const notImplemented = () => sendFetch('/notImplemented');
+      // const notFound = () => sendFetch('/somethingUnhandled');
 
       //Once we have the above functions, we can hook them up to the click events of each button.
       //is this ok with a switch statement**
-      errorButton.addEventListener('click', success);
-      errorButton.addEventListener('click', badRequest);
-      errorButton.addEventListener('click', unauthorized);
-      errorButton.addEventListener('click', forbidden);
-      errorButton.addEventListener('click', internal);
-      errorButton.addEventListener('click', notImplemented);
-      errorButton.addEventListener('click', notFound);
+      // errorButton.addEventListener('click', success);
+      // errorButton.addEventListener('click', badRequest);
+      // errorButton.addEventListener('click', unauthorized);
+      // errorButton.addEventListener('click', forbidden);
+      // errorButton.addEventListener('click', internal);
+      // errorButton.addEventListener('click', notImplemented);
+      // errorButton.addEventListener('click', notFound);
     
 
-      const sendJSON = () => sendFetchRequest('/json', 'application/json');
-      const sendXML = () => sendFetchRequest('/xml', 'text/xml');
+      // const sendJSON = () => sendFetchRequest('/json', 'application/json');
+      // const sendXML = () => sendFetchRequest('/xml', 'text/xml');
 
 
-      typeButton.addEventListener('click', sendJSON);
-      typeButton.addEventListener('click', sendXML);
+      // typeButton.addEventListener('click', sendJSON);
+      // typeButton.addEventListener('click', sendXML);
      
 
     };
