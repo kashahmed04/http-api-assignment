@@ -12,25 +12,25 @@
 
       switch(response.status) {
         case 200: //Success
-          content.innerHTML = `<b>${response.message}</b><b>${response.name}</b>`;
+          content.innerHTML = `<b>Success</b>`;
           break;
         case 400: //Bad Request
-          content.innerHTML = `<b>${response.message}</b><b>${response.name}</b>`;
+          content.innerHTML = `<b>Bad Request</b>`;
           break;
         case 401:
-          content.innerHTML = `<b>${response.message}</b><b>${response.name}</b>`;
+          content.innerHTML = `<b>Unauthorized<b>`;
             break;
         case 403:
-          content.innerHTML = `<b>${response.message}</b><b>${response.name}</b>`;
+          content.innerHTML = `<b>Forbidden<b>`;
           break;
         case 500:
-          content.innerHTML = `<b>${response.message}</b><b>${response.name}</b>`;
+          content.innerHTML = `<b>Internal<b>`;
           break;
         case 501:
-          content.innerHTML = `<b>${response.message}</b><b>${response.name}</b>`;
+          content.innerHTML = `<b>Not implemented<b>`;
           break;
         case 404: //Not Found
-          content.innerHTML = `<b>${response.message}</b><b>${response.name}</b>`;
+          content.innerHTML = `<b>Not Found</b>`;
           break;
         default: //Anything Else
           content.innerHTML = `<p>Status Code not Implemented By Client</p>`;
@@ -39,7 +39,7 @@
 
       let resObj = await response.json();
 
-      content.innerHTML += `<p>${resObj.name}</p><br><br><p>${resObj.message}</p>`;
+      content.innerHTML += `<p>${resObj.message}</p>`;
     };
     
     const sendFetch = async (url) => {
