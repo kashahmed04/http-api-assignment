@@ -6,133 +6,183 @@
   
   <script>
 
-    const handleResponse = async (response) => {
+    // const handleResponse = async (response) => {
       
-      const content = document.getElementById('content');
+    //   const content = document.getElementById('content');
 
-      switch(response.status) {
-        case 200: //Success
-          content.innerHTML = `<b>Success</b>`;
-          break;
-        case 400: //Bad Request
-          content.innerHTML = `<b>Bad Request</b>`;
-          break;
-        case 401:
-          content.innerHTML = `<b>Unauthorized<b>`;
-            break;
-        case 403:
-          content.innerHTML = `<b>Forbidden<b>`;
-          break;
-        case 500:
-          content.innerHTML = `<b>Internal<b>`;
-          break;
-        case 501:
-          content.innerHTML = `<b>Not implemented<b>`;
-          break;
-        case 404: //Not Found
-          content.innerHTML = `<b>Not Found</b>`;
-          break;
-        default: //Anything Else
-          content.innerHTML = `<p>Status Code not Implemented By Client</p>`;
-          break;
-      }
+    //   switch(response.status) {
+    //     case 200: //Success
+    //       content.innerHTML = `<b>Success</b>`;
+    //       break;
+    //     case 400: //Bad Request
+    //       content.innerHTML = `<b>Bad Request</b>`;
+    //       break;
+    //     case 401:
+    //       content.innerHTML = `<b>Unauthorized<b>`;
+    //         break;
+    //     case 403:
+    //       content.innerHTML = `<b>Forbidden<b>`;
+    //       break;
+    //     case 500:
+    //       content.innerHTML = `<b>Internal<b>`;
+    //       break;
+    //     case 501:
+    //       content.innerHTML = `<b>Not implemented<b>`;
+    //       break;
+    //     case 404: //Not Found
+    //       content.innerHTML = `<b>Not Found</b>`;
+    //       break;
+    //     default: //Anything Else
+    //       content.innerHTML = `<p>Status Code not Implemented By Client</p>`;
+    //       break;
+    //   }
 
-      let resObj = await response.json();
+    //   let resObj = await response.json();
 
-      content.innerHTML += `<p>${resObj.message}</p>`;
-    };
+    //   content.innerHTML += `<p>${resObj.message}</p>`;
+    // };
     
-    const sendFetch = async (url) => {
-      //Call fetch, wait til we get a response, and then store that response in the variable.
-      let response = await fetch(url);
+    // const sendFetch = async (url) => {
+    //   //Call fetch, wait til we get a response, and then store that response in the variable.
+    //   let response = await fetch(url);
 
-      //Call handleResponse with the response we got back from the server.
-      handleResponse(response);
-    };
+    //   //Call handleResponse with the response we got back from the server.
+    //   handleResponse(response);
+    // };
 
     const sendFetchRequest = (url, acceptedType) => {
-      const options = {
+    const options = {
         method: 'GET',
-        headers: {'Accept': acceptedType}
-      }
+        headers: { 'Accept': acceptedType }
+    };
 
-      const fetchPromise = fetch(url, options);
+    fetch(url, options)
+        .then((response) => {
+            return response.text().then((resText) => {
+                const contentType = response.headers.get('Content-Type');
+                const content = document.querySelector("#content");
 
-      fetchPromise.then((response) => {
-        response.text().then((resText) => {
-          const contentType = response.headers.get('Content-Type');
-          const content = document.querySelector("#content");
-          content.appendChild(document.createElement('hr'));
-          const pJSON = document.createElement('p');
-          const pXML = document.createElement('p');
+                // Clear previous content
+                content.innerHTML = '';
 
-          if(contentType === 'application/json'){
-            //is this ok for printing value before the 
-            //data gets parsed
-            console.log(resText);
-            const parsedResponse = JSON.parse(resText);
-            p.textContent = parsedResponse;
-          }
-          else if(contentType === 'text/xml'){
-            console.log(resText);
-            const parsedResponse = new window.DOMParser().parseFromString(resText, 'text/xml');
-            p.textContent = parsedResponse;
-          }
+                // Status Handling via Switch Case
+                switch(response.status) {
+                    case 200: // Success
+                        content.innerHTML = `<h1>Success</h1>`;
+                        break;
+                    case 400: // Bad Request
+                        content.innerHTML = `<h1>Bad Request</h1>`;
+                        break;
+                    case 401: // Unauthorized
+                        content.innerHTML = `<h1>Unauthorized</h1>`;
+                        break;
+                    case 403: // Forbidden
+                        content.innerHTML = `<h1>Forbidden</h1>`;
+                        break;
+                    case 404: // Not Found
+                        content.innerHTML = `<h1>Not Found</h1>`;
+                        break;
+                    case 500: // Internal Server Error
+                        content.innerHTML = `<h1>Internal Server Error</h1>`;
+                        break;
+                    case 501: // Not Implemented
+                        content.innerHTML = `<h1>Not Implemented</h1>`;
+                        break;
+                    default: // Any other status
+                        content.innerHTML = `<h1>Status Code not Implemented by Client</h1>`;
+                        break;
+                }
 
-          content.appendChild(pJSON);
-          content.appendChild(pXML);
+                // Handle JSON or XML responses
+                const messageParagraph = document.createElement('p');
 
+                if (contentType.includes('application/json')) {
+                    
+                    console.log(resText);
+                    const parsedResponse = JSON.parse(resText);
+                    messageParagraph.textContent = `Message: ${parsedResponse.message}`;
+
+                } 
+
+                else if (contentType.includes('text/xml')) {
+                    //does it matter if we put this console.log in the server side or client side only**
+                    console.log(resText);
+                    const parsedResponse = new window.DOMParser().parseFromString(resText, 'text/xml');
+                    const messageNode = parsedResponse.getElementsByTagName('message')[0].textContent;
+                    const idNode = parsedResponse.getElementsByTagName('id')[1].textContent;
+                    
+                    
+                    let responseXML = '<response>';
+                    responseXML += `<message>${messageNode}</message>`;
+                    responseXML += `<id>${idNode}</id>`;
+                    responseXML += '</response>';
+
+                    messageParagraph.textContent = responseXML;
+
+                }
+
+                else {
+                    messageParagraph.textContent = 'Unsupported content type';
+                }
+
+                // Append the message to the content
+                content.appendChild(messageParagraph);
+            });
         });
-      });
-    }
+    };
+
 
     const init = () => {
       //Grab references to all the buttons on the page.
       //how to get the specific pages
-      const errorButton = document.querySelector("#page").value;
-      const typeButton = document.querySelector("#type").value;
+      const urlSelect = document.querySelector("#page");
+      const typeSelect = document.querySelector("#type");
       const sendButton = document.querySelector("#send");
 
-      sendButton.addEventListener('click', () => {
+      sendButton.addEventListener('click', () =>{
+        sendFetchRequest(urlSelect.value, typeSelect.value);
+      });
 
-      switch (errorButton) {
-      case '/success':
-        sendFetch('/success');
-        break;
-      case '/badRequest':
-        sendFetch('/badRequest');
-        break;
-      case '/unauthorized':
-        sendFetch('/unauthorized');
-        break;
-      case '/forbidden':
-        sendFetch('/forbidden');
-        break;
-      case '/internal':
-        sendFetch('/internal');
-        break;
-      case '/notImplemented':
-        sendFetch('/notImplemented');
-        break;
-      case '/notFound':
-        sendFetch('/somethingUnhandled');
-        break;
-      default:
-        console.log('Unhandled page value');
-      }
+    //   sendButton.addEventListener('click', () => {
 
-      switch (typeButton) {
-      case 'application/json':
-        sendFetchRequest('/json', 'application/json');
-        break;
-      case 'text/xml':
-        sendFetchRequest('/xml', 'text/xml');
-        break;
-      default:
-        console.log('Unhandled type value');
-      }
+    //   switch (errorButton) {
+    //   case '/success':
+    //     sendFetch('/success');
+    //     break;
+    //   case '/badRequest':
+    //     sendFetch('/badRequest');
+    //     break;
+    //   case '/unauthorized':
+    //     sendFetch('/unauthorized');
+    //     break;
+    //   case '/forbidden':
+    //     sendFetch('/forbidden');
+    //     break;
+    //   case '/internal':
+    //     sendFetch('/internal');
+    //     break;
+    //   case '/notImplemented':
+    //     sendFetch('/notImplemented');
+    //     break;
+    //   case '/notFound':
+    //     sendFetch('/somethingUnhandled');
+    //     break;
+    //   default:
+    //     console.log('Unhandled page value');
+    //   }
 
-    });
+    //   switch (typeButton) {
+    //   case 'application/json':
+    //     sendFetchRequest('/json', 'application/json');
+    //     break;
+    //   case 'text/xml':
+    //     sendFetchRequest('/xml', 'text/xml');
+    //     break;
+    //   default:
+    //     console.log('Unhandled type value');
+    //   }
+
+    // });
 
       // const success = () => sendFetch('/success');
       // const badRequest = () => sendFetch('/badRequest');
