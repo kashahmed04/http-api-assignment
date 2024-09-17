@@ -4,10 +4,17 @@ const respondJSON = (request, response, status, object) => {
   
     if(request.acceptedTypes[0] === 'text/xml'){
       let responseXML = '<response>';
+      //is this ok so it does message then an id or should we keep them separate**
       if(object.message){
         responseXML += `<message>${object.message}</message>`;
-        responseXML += `<id>${object.id}</id>`; //what if it does not exist does it get ignored**
 
+        if(object.id) {
+
+          responseXML += `<id>${object.id}</id>`; //if we did not have conditional would it just
+          //say undefined and not ignore the value itself and include it in the JSON and XML**
+          //why did it include it in the JSON and XML when I converted**
+        
+        }
       }
       responseXML += `</response>`;
 
@@ -21,6 +28,7 @@ const respondJSON = (request, response, status, object) => {
 
 
     }
+    //is this ok for JSON and default case since it is just an else statement**
     else {
 
       const content = JSON.stringify(object);

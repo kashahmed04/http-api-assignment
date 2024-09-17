@@ -56,28 +56,21 @@
                     
                     //does it matter if we put this console.log in the server side or client side only**
                     console.log(resText);
-                    //const parsedResponse = JSON.parse(resText);
-                    messageParagraph.textContent = `Message: ${resText.message}`;
+                    const parsedResponse = JSON.parse(resText);
+                    messageParagraph.textContent = `Message: ${parsedResponse.message}`;
 
                 } 
 
                 else if (contentType.includes('text/xml')) {
 
                     console.log(resText);
-                    // const parsedResponse = new window.DOMParser().parseFromString(resText, 'text/xml');
-                    // //this is how it works right we get the object we need from parsedResponse 
-                    // //then we index it to get the specific values for the keys when we search for
-                    // //it by key name**
-                    // const messageNode = parsedResponse.getElementsByTagName('message')[0].textContent;
-                    // const idNode = parsedResponse.getElementsByTagName('id')[1].textContent;
-                    
-                    
-                    // let responseXML = '<response>';
-                    // responseXML += `<message>${messageNode}</message>`;
-                    // responseXML += `<id>${idNode}</id>`;
-                    // responseXML += '</response>';
+                    const parsedResponse = new window.DOMParser().parseFromString(resText, 'text/xml');
+                    //this is how it works right we get the object we need from parsedResponse 
+                    //then we index it to get the specific values for the keys when we search for
+                    //it by key name**
+                    const messageNode = parsedResponse.getElementsByTagName('message')[0].textContent;
 
-                    messageParagraph.textContent = resText.message;
+                    messageParagraph.textContent = `Message: ${messageNode}`;
 
                 }
 
