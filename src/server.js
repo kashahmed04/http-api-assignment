@@ -2,9 +2,7 @@
 const http = require('http'); 
 const htmlHandler = require('./htmlResponses.js');
 const jsonHandler = require('./jsonResponses.js');
-
-//when it says default to JSON format, is it already by default because
-//the button is already set to JSON**
+//is the testing correct in the terminal**
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {

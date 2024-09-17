@@ -6,50 +6,6 @@
   
   <script>
 
-    // const handleResponse = async (response) => {
-      
-    //   const content = document.getElementById('content');
-
-    //   switch(response.status) {
-    //     case 200: //Success
-    //       content.innerHTML = `<b>Success</b>`;
-    //       break;
-    //     case 400: //Bad Request
-    //       content.innerHTML = `<b>Bad Request</b>`;
-    //       break;
-    //     case 401:
-    //       content.innerHTML = `<b>Unauthorized<b>`;
-    //         break;
-    //     case 403:
-    //       content.innerHTML = `<b>Forbidden<b>`;
-    //       break;
-    //     case 500:
-    //       content.innerHTML = `<b>Internal<b>`;
-    //       break;
-    //     case 501:
-    //       content.innerHTML = `<b>Not implemented<b>`;
-    //       break;
-    //     case 404: //Not Found
-    //       content.innerHTML = `<b>Not Found</b>`;
-    //       break;
-    //     default: //Anything Else
-    //       content.innerHTML = `<p>Status Code not Implemented By Client</p>`;
-    //       break;
-    //   }
-
-    //   let resObj = await response.json();
-
-    //   content.innerHTML += `<p>${resObj.message}</p>`;
-    // };
-    
-    // const sendFetch = async (url) => {
-    //   //Call fetch, wait til we get a response, and then store that response in the variable.
-    //   let response = await fetch(url);
-
-    //   //Call handleResponse with the response we got back from the server.
-    //   handleResponse(response);
-    // };
-
     const sendFetchRequest = (url, acceptedType) => {
     const options = {
         method: 'GET',
@@ -59,65 +15,69 @@
     fetch(url, options)
         .then((response) => {
             return response.text().then((resText) => {
+
                 const contentType = response.headers.get('Content-Type');
                 const content = document.querySelector("#content");
 
-                // Clear previous content
+                //clear previous content 
+                //code does not have to be commented right except for projects**
                 content.innerHTML = '';
 
-                // Status Handling via Switch Case
                 switch(response.status) {
-                    case 200: // Success
+                    case 200: 
                         content.innerHTML = `<h1>Success</h1>`;
                         break;
-                    case 400: // Bad Request
+                    case 400: 
                         content.innerHTML = `<h1>Bad Request</h1>`;
                         break;
-                    case 401: // Unauthorized
+                    case 401: 
                         content.innerHTML = `<h1>Unauthorized</h1>`;
                         break;
-                    case 403: // Forbidden
+                    case 403: 
                         content.innerHTML = `<h1>Forbidden</h1>`;
                         break;
-                    case 404: // Not Found
+                    case 404: 
                         content.innerHTML = `<h1>Not Found</h1>`;
                         break;
-                    case 500: // Internal Server Error
+                    case 500: 
                         content.innerHTML = `<h1>Internal Server Error</h1>`;
                         break;
-                    case 501: // Not Implemented
+                    case 501: 
                         content.innerHTML = `<h1>Not Implemented</h1>`;
                         break;
-                    default: // Any other status
+                    default:
                         content.innerHTML = `<h1>Status Code not Implemented by Client</h1>`;
                         break;
                 }
 
-                // Handle JSON or XML responses
                 const messageParagraph = document.createElement('p');
 
                 if (contentType.includes('application/json')) {
                     
+                    //does it matter if we put this console.log in the server side or client side only**
                     console.log(resText);
-                    const parsedResponse = JSON.parse(resText);
-                    messageParagraph.textContent = `Message: ${parsedResponse.message}`;
+                    //const parsedResponse = JSON.parse(resText);
+                    messageParagraph.textContent = `Message: ${resText.message}`;
 
                 } 
 
                 else if (contentType.includes('text/xml')) {
-                    //does it matter if we put this console.log in the server side or client side only**
-                    console.log(resText);
-                    const parsedResponse = new window.DOMParser().parseFromString(resText, 'text/xml');
-                    const messageNode = parsedResponse.getElementsByTagName('message')[0].textContent;
-                    const idNode = parsedResponse.getElementsByTagName('id')[1].textContent;
-                    
-                    
-                    let responseXML = '<response>';
-                    responseXML += `<message>${messageNode}</message>`;
-                    responseXML += `<id>${idNode}</id>`;
-                    responseXML += '</response>';
 
-                    messageParagraph.textContent = responseXML;
+                    console.log(resText.mes);
+                    // const parsedResponse = new window.DOMParser().parseFromString(resText, 'text/xml');
+                    // //this is how it works right we get the object we need from parsedResponse 
+                    // //then we index it to get the specific values for the keys when we search for
+                    // //it by key name**
+                    // const messageNode = parsedResponse.getElementsByTagName('message')[0].textContent;
+                    // const idNode = parsedResponse.getElementsByTagName('id')[1].textContent;
+                    
+                    
+                    // let responseXML = '<response>';
+                    // responseXML += `<message>${messageNode}</message>`;
+                    // responseXML += `<id>${idNode}</id>`;
+                    // responseXML += '</response>';
+
+                    messageParagraph.textContent = resText.message;
 
                 }
 
@@ -125,7 +85,6 @@
                     messageParagraph.textContent = 'Unsupported content type';
                 }
 
-                // Append the message to the content
                 content.appendChild(messageParagraph);
             });
         });
@@ -133,8 +92,7 @@
 
 
     const init = () => {
-      //Grab references to all the buttons on the page.
-      //how to get the specific pages
+
       const urlSelect = document.querySelector("#page");
       const typeSelect = document.querySelector("#type");
       const sendButton = document.querySelector("#send");
@@ -142,74 +100,6 @@
       sendButton.addEventListener('click', () =>{
         sendFetchRequest(urlSelect.value, typeSelect.value);
       });
-
-    //   sendButton.addEventListener('click', () => {
-
-    //   switch (errorButton) {
-    //   case '/success':
-    //     sendFetch('/success');
-    //     break;
-    //   case '/badRequest':
-    //     sendFetch('/badRequest');
-    //     break;
-    //   case '/unauthorized':
-    //     sendFetch('/unauthorized');
-    //     break;
-    //   case '/forbidden':
-    //     sendFetch('/forbidden');
-    //     break;
-    //   case '/internal':
-    //     sendFetch('/internal');
-    //     break;
-    //   case '/notImplemented':
-    //     sendFetch('/notImplemented');
-    //     break;
-    //   case '/notFound':
-    //     sendFetch('/somethingUnhandled');
-    //     break;
-    //   default:
-    //     console.log('Unhandled page value');
-    //   }
-
-    //   switch (typeButton) {
-    //   case 'application/json':
-    //     sendFetchRequest('/json', 'application/json');
-    //     break;
-    //   case 'text/xml':
-    //     sendFetchRequest('/xml', 'text/xml');
-    //     break;
-    //   default:
-    //     console.log('Unhandled type value');
-    //   }
-
-    // });
-
-      // const success = () => sendFetch('/success');
-      // const badRequest = () => sendFetch('/badRequest');
-      // const unauthorized = () => sendFetch('/unauthorized');
-      // const forbidden = () => sendFetch('/forbidden');
-      // const internal = () => sendFetch('/internal');
-      // const notImplemented = () => sendFetch('/notImplemented');
-      // const notFound = () => sendFetch('/somethingUnhandled');
-
-      //Once we have the above functions, we can hook them up to the click events of each button.
-      //is this ok with a switch statement**
-      // errorButton.addEventListener('click', success);
-      // errorButton.addEventListener('click', badRequest);
-      // errorButton.addEventListener('click', unauthorized);
-      // errorButton.addEventListener('click', forbidden);
-      // errorButton.addEventListener('click', internal);
-      // errorButton.addEventListener('click', notImplemented);
-      // errorButton.addEventListener('click', notFound);
-    
-
-      // const sendJSON = () => sendFetchRequest('/json', 'application/json');
-      // const sendXML = () => sendFetchRequest('/xml', 'text/xml');
-
-
-      // typeButton.addEventListener('click', sendJSON);
-      // typeButton.addEventListener('click', sendXML);
-     
 
     };
 

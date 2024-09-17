@@ -4,9 +4,12 @@ const respondJSON = (request, response, status, object) => {
   
     if(request.acceptedTypes[0] === 'text/xml'){
       let responseXML = '<response>';
-      responseXML += `${responseXML} <message>${object.message}</message>`;
-      responseXML += `${responseXML} <id>${object.id}</id>`; //what if it does not exist doe sit get ignored**
-      responseXML += `${responseXML} </response>`;
+      if(object.message){
+        responseXML += `<message>${object.message}</message>`;
+        responseXML += `<id>${object.id}</id>`; //what if it does not exist does it get ignored**
+
+      }
+      responseXML += `</response>`;
 
       response.writeHead(status, { 
         'Content-Type': 'application/json',
@@ -21,7 +24,7 @@ const respondJSON = (request, response, status, object) => {
     else {
 
       const content = JSON.stringify(object);
-      
+
       response.writeHead(status, { 
         'Content-Type': 'application/json',
         'Content-Length': Buffer.byteLength(content, 'utf8'),
@@ -42,8 +45,6 @@ const respondJSON = (request, response, status, object) => {
     respondJSON(request, response, 200, responseJSON);
   };
   
-
-  //getting error for style.css when program starts and in network when I switch status codes
   const badRequest = (request, response) => {
 
     const responseJSON = {
@@ -52,7 +53,8 @@ const respondJSON = (request, response, status, object) => {
 
     if (!request.query.valid || request.query.valid !== 'true') {
       responseJSON.message = 'Missing valid query parameter set to true.';
-      responseJSON.id = 'badRequest'
+      //is this how we would set up the request**
+      responseJSON.id = 'badRequest';
       return respondJSON(request, response, 400, responseJSON);
     }
   
@@ -72,7 +74,7 @@ const respondJSON = (request, response, status, object) => {
       return respondJSON(request, response, 401, responseJSON);
     }
   
-    responseJSON.message = 'You have successfully viewed the content.'
+    responseJSON.message = 'You have successfully viewed the content.';
     return respondJSON(request, response, 200, responseJSON);    
 
   }
