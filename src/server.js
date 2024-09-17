@@ -11,7 +11,11 @@ const urlStruct = {
   '/': htmlHandler.getIndex,
   '/success': jsonHandler.success,
   '/badRequest': jsonHandler.badRequest,
-  '/css': htmlHandler.getStyles,
+  '/unauthorized': jsonHandler.unauthorized,
+  '/forbidden': jsonHandler.forbidden,
+  '/internal': jsonHandler.internal,
+  '/notImplemented': jsonHandler.notImplemented,
+  '/style.css': htmlHandler.getStyles,
   notFound: jsonHandler.notFound,
 };
 
