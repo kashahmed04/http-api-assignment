@@ -1,5 +1,6 @@
 // we were supposed to get errors in the console except for a 200 status code right for
 // the dropdown pathname and actually typing the url pathname**
+// what does works both directly to the url and with FETCH mean on rubric****
 const respondJSON = (request, response, status, object) => {
   if (request.acceptedTypes[0] === 'text/xml') {
     let responseXML = '<response>';
