@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./src/server.js",
+    "pretest": "eslint ./src --fix",
     "test": "echo \"No Tests\""
   },
   "author": "Kash Ahmed",

@@ -20,9 +20,16 @@
                 const content = document.querySelector("#content");
 
                 //clear previous content 
-                //code does not have to be commented right except for projects**
+                //do one sentence for each function
                 content.innerHTML = '';
 
+                //this shows the heading and below is the message which is taken from the 
+                //JSONResponses.js in respondJSON which was originally a string in there
+                //but we turn it into an object here so we can access specific information**
+                //we had to make the information a string in respondJSON in order to send information
+                //from server to client (HTTP standard) so here we can convert the information back
+                //into an object and get specific data from it to display it or work
+                //with the data**
                 switch(response.status) {
                     case 200: 
                         content.innerHTML = `<h1>Success</h1>`;
@@ -37,7 +44,7 @@
                         content.innerHTML = `<h1>Forbidden</h1>`;
                         break;
                     case 404: 
-                        content.innerHTML = `<h1>Not Found</h1>`;
+                        content.innerHTML = `<h1>Resource Not Found</h1>`;
                         break;
                     case 500: 
                         content.innerHTML = `<h1>Internal Server Error</h1>`;
@@ -53,8 +60,6 @@
                 const messageParagraph = document.createElement('p');
 
                 if (contentType.includes('application/json')) {
-                    
-                    //does it matter if we put this console.log in the server side or client side only**
                     console.log(resText);
                     const parsedResponse = JSON.parse(resText);
                     messageParagraph.textContent = `Message: ${parsedResponse.message}`;
@@ -63,11 +68,16 @@
 
                 else if (contentType.includes('text/xml')) {
 
+                  
+                    //why is NPM test not working
+                    //from client to server is it also a string to transfer data from server to client (same for
+                    //client to server yes
+                    //go over what accept headers mean**
                     console.log(resText);
                     const parsedResponse = new window.DOMParser().parseFromString(resText, 'text/xml');
                     //this is how it works right we get the object we need from parsedResponse 
                     //then we index it to get the specific values for the keys when we search for
-                    //it by key name**
+                    //it by key name (yes) (we could also doa  query select)
                     const messageNode = parsedResponse.getElementsByTagName('message')[0].textContent;
 
                     messageParagraph.textContent = `Message: ${messageNode}`;
