@@ -1,17 +1,12 @@
-// we were supposed to get errors in the console except for a 200 status code right for
-// the dropdown pathname and actually typing the url pathname**
-// what does works both directly to the url and with FETCH mean on rubric****
+
 const respondJSON = (request, response, status, object) => {
   if (request.acceptedTypes[0] === 'text/xml') {
     let responseXML = '<response>';
-    // is this ok so it does message then an id or should we keep them separate**
     if (object.message) {
       responseXML += `<message>${object.message}</message>`;
 
       if (object.id) {
-        responseXML += `<id>${object.id}</id>`; // if we did not have conditional would it just
-        // say undefined and not ignore the value itself and include it in the JSON and XML**
-        // why did it include it in the JSON and XML when I converted**
+        responseXML += `<id>${object.id}</id>`; 
       }
     }
 
@@ -24,6 +19,7 @@ const respondJSON = (request, response, status, object) => {
 
     response.write(responseXML);
     response.end();
+
   } else {
     const content = JSON.stringify(object);
 
@@ -33,6 +29,8 @@ const respondJSON = (request, response, status, object) => {
     });
 
     response.write(content);
+    //this is when the data goes back to the client and we can work with this string
+    //to convert it afterwards
     response.end();
   }
 };

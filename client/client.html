@@ -13,9 +13,11 @@
     };
 
     fetch(url, options)
+      //rseponse is the information in binary and resText is the information as a string
+      //client sends data and says I want it in this format and the server sends back the data and
+      //then the client displays it 
         .then((response) => {
             return response.text().then((resText) => {
-
                 const contentType = response.headers.get('Content-Type');
                 const content = document.querySelector("#content");
 
@@ -23,13 +25,6 @@
                 //do one sentence for each function
                 content.innerHTML = '';
 
-                //this shows the heading and below is the message which is taken from the 
-                //JSONResponses.js in respondJSON which was originally a string in there
-                //but we turn it into an object here so we can access specific information**
-                //we had to make the information a string in respondJSON in order to send information
-                //from server to client (HTTP standard) so here we can convert the information back
-                //into an object and get specific data from it to display it or work
-                //with the data**
                 switch(response.status) {
                     case 200: 
                         content.innerHTML = `<h1>Success</h1>`;
@@ -68,12 +63,6 @@
 
                 else if (contentType.includes('text/xml')) {
 
-                  
-                    //why is NPM test not working
-                    //from client to server is it also a string to transfer data from server to client (same for
-                    //client to server yes
-                    //go over what accept headers mean**
-                    //is this ok for printing to console****
                     console.log(resText);
                     const parsedResponse = new window.DOMParser().parseFromString(resText, 'text/xml');
                     //this is how it works right we get the object we need from parsedResponse 

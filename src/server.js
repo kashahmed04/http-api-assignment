@@ -1,7 +1,6 @@
 const http = require('http');
 const htmlHandler = require('./htmlResponses.js');
 const jsonHandler = require('./jsonResponses.js');
-// is the testing correct in the terminal**
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {
